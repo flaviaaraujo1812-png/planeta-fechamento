@@ -169,20 +169,28 @@ cursor:pointer;
 
 </div>
 
-<script>
+  <script>
+
+function parseBR(valor){
+if(!valor) return 0;
+valor = valor.toString()
+.replace(/\./g,"")
+.replace(",",".");
+return Number(valor);
+}
 
 function moeda(v){
-return v.toLocaleString("pt-BR",{minimumFractionDigits:2});
+return v.toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
 function calcular(){
 
-let entradas = Number(document.getElementById("entradas").value);
-let despesas = Number(document.getElementById("despesas").value);
-let dividas = Number(document.getElementById("dividas").value);
+let entradas = parseBR(document.getElementById("entradas").value);
+let despesas = parseBR(document.getElementById("despesas").value);
+let dividas = parseBR(document.getElementById("dividas").value);
 
-let retirada1 = Number(document.getElementById("retirada1").value);
-let retirada2 = Number(document.getElementById("retirada2").value);
+let retirada1 = parseBR(document.getElementById("retirada1").value);
+let retirada2 = parseBR(document.getElementById("retirada2").value);
 
 let lucro = entradas - despesas - dividas;
 
@@ -223,7 +231,7 @@ saldo2.style.color = final2 >= 0 ? "green" : "red";
 
 }
 
-document.addEventListener("input",calcular);
+document.addEventListener("input", calcular);
 
 </script>
 
