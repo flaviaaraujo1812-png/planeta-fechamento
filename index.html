@@ -6,14 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
 background:#f4f4f4;
+margin:0;
 }
 
 .container{
@@ -23,19 +22,18 @@ background:white;
 padding:30px;
 margin-top:40px;
 border-radius:6px;
-box-shadow:0 0 8px rgba(0,0,0,0.1);
+box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 h1{
 text-align:center;
-margin-bottom:10px;
+margin-bottom:5px;
 }
 
 .empresa{
 text-align:center;
 font-size:14px;
-line-height:1.6;
-margin-bottom:25px;
+margin-bottom:30px;
 }
 
 .grid{
@@ -53,11 +51,11 @@ border:1px solid #ccc;
 border-radius:4px;
 }
 
-.resultados{
-margin-top:20px;
-padding:20px;
+.resultado{
 background:#f9f9f9;
+padding:20px;
 border-radius:5px;
+margin-top:20px;
 }
 
 .linha{
@@ -69,15 +67,8 @@ font-size:15px;
 
 .total{
 font-weight:bold;
-font-size:18px;
+font-size:17px;
 margin-top:10px;
-}
-
-.socios{
-margin-top:25px;
-padding:20px;
-background:#eef2ff;
-border-radius:6px;
 }
 
 button{
@@ -109,11 +100,26 @@ body{background:white;}
 
 <div class="empresa">
 CNPJ: 48.027.075/0001-92<br>
-Av Treze de Maio, 1310 - CEP 14090-260<br>
-WhatsApp: (16) 99607-3421
+Av. Treze de Maio, 1310 - Ribeirão Preto/SP
 </div>
 
-<h2>Fechamento de Caixa</h2>
+<h2>Retirada dos Sócios no mês</h2>
+
+<div class="grid">
+
+<div>
+<label>Sócio 1 retirou</label>
+<input type="number" id="retirada1" value="0">
+</div>
+
+<div>
+<label>Sócio 2 retirou</label>
+<input type="number" id="retirada2" value="0">
+</div>
+
+</div>
+
+<h2>Dados do mês</h2>
 
 <div class="grid">
 
@@ -134,17 +140,14 @@ WhatsApp: (16) 99607-3421
 
 <div>
 <label>Mês</label>
-<input type="text" placeholder="Ex: Janeiro 2026">
+<input type="text" placeholder="Ex: Março 2026">
 </div>
 
 </div>
 
-<div class="resultados">
+<div class="resultado">
 
-<div class="linha">
-<span>Total Despesas</span>
-<span id="totalDespesas">0</span>
-</div>
+<h3>Resultado da Empresa</h3>
 
 <div class="linha">
 <span>Lucro Líquido</span>
@@ -153,39 +156,63 @@ WhatsApp: (16) 99607-3421
 
 </div>
 
-<div class="socios">
+<div class="resultado">
 
-<h3>Divisão dos Sócios</h3>
+<h3>Sócio 1 (70%)</h3>
 
 <div class="linha">
-<span>Sócio 1 (70%)</span>
-<span id="socio1">0</span>
+<span>Parte do lucro</span>
+<span id="lucro1">0</span>
 </div>
 
 <div class="linha">
-<span>Sócio 2 (30%)</span>
-<span id="socio2">0</span>
-</div>
-
-<h3>Divisão das Dívidas</h3>
-
-<div class="linha">
-<span>Sócio 1 paga</span>
-<span id="divida1">0</span>
+<span>Despesas fixas</span>
+<span id="desp1">0</span>
 </div>
 
 <div class="linha">
-<span>Sócio 2 paga</span>
-<span id="divida2">0</span>
+<span>Dívidas pagas</span>
+<span id="div1">0</span>
+</div>
+
+<div class="linha">
+<span>Retirada</span>
+<span id="ret1">0</span>
 </div>
 
 <div class="linha total">
-<span>Saldo Final Sócio 1</span>
+<span>Saldo final</span>
 <span id="final1">0</span>
 </div>
 
+</div>
+
+<div class="resultado">
+
+<h3>Sócio 2 (30%)</h3>
+
+<div class="linha">
+<span>Parte do lucro</span>
+<span id="lucro2">0</span>
+</div>
+
+<div class="linha">
+<span>Despesas fixas</span>
+<span id="desp2">0</span>
+</div>
+
+<div class="linha">
+<span>Dívidas pagas</span>
+<span id="div2">0</span>
+</div>
+
+<div class="linha">
+<span>Retirada</span>
+<span id="ret2">0</span>
+</div>
+
 <div class="linha total">
-<span>Saldo Final Sócio 2</span>
+<span>Saldo final</span>
 <span id="final2">0</span>
 </div>
 
@@ -197,41 +224,55 @@ WhatsApp: (16) 99607-3421
 
 <script>
 
+function moeda(v){
+return v.toLocaleString("pt-BR",{minimumFractionDigits:2});
+}
+
 function calcular(){
 
 let entradas = Number(document.getElementById("entradas").value);
 let despesas = Number(document.getElementById("despesas").value);
 let dividas = Number(document.getElementById("dividas").value);
 
-let totalDespesas = despesas + dividas;
-let lucro = entradas - totalDespesas;
+let retirada1 = Number(document.getElementById("retirada1").value);
+let retirada2 = Number(document.getElementById("retirada2").value);
 
-let socio1 = lucro * 0.7;
-let socio2 = lucro * 0.3;
+let lucro = entradas - despesas - dividas;
 
-let divida1 = dividas * 0.7;
-let divida2 = dividas * 0.3;
+let lucro1 = lucro * 0.7;
+let lucro2 = lucro * 0.3;
 
-let final1 = socio1 - divida1;
-let final2 = socio2 - divida2;
+let desp1 = despesas / 2;
+let desp2 = despesas / 2;
 
-document.getElementById("totalDespesas").innerText = totalDespesas.toFixed(2);
-document.getElementById("lucro").innerText = lucro.toFixed(2);
+let div1 = dividas * 0.7;
+let div2 = dividas * 0.3;
 
-document.getElementById("socio1").innerText = socio1.toFixed(2);
-document.getElementById("socio2").innerText = socio2.toFixed(2);
+let final1 = lucro1 - desp1 - div1 - retirada1;
+let final2 = lucro2 - desp2 - div2 - retirada2;
 
-document.getElementById("divida1").innerText = divida1.toFixed(2);
-document.getElementById("divida2").innerText = divida2.toFixed(2);
+document.getElementById("lucro").innerText = moeda(lucro);
 
-document.getElementById("final1").innerText = final1.toFixed(2);
-document.getElementById("final2").innerText = final2.toFixed(2);
+document.getElementById("lucro1").innerText = moeda(lucro1);
+document.getElementById("lucro2").innerText = moeda(lucro2);
+
+document.getElementById("desp1").innerText = moeda(desp1);
+document.getElementById("desp2").innerText = moeda(desp2);
+
+document.getElementById("div1").innerText = moeda(div1);
+document.getElementById("div2").innerText = moeda(div2);
+
+document.getElementById("ret1").innerText = moeda(retirada1);
+document.getElementById("ret2").innerText = moeda(retirada2);
+
+document.getElementById("final1").innerText = moeda(final1);
+document.getElementById("final2").innerText = moeda(final2);
 
 }
 
-document.addEventListener("input", calcular);
+document.addEventListener("input",calcular);
 
-if ("serviceWorker" in navigator) {
+if("serviceWorker" in navigator){
 navigator.serviceWorker.register("service-worker.js");
 }
 
