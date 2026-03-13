@@ -5,8 +5,6 @@
 <title>Fechamento de Sócios</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="manifest" href="manifest.json">
-
 <style>
 
 body{
@@ -27,13 +25,6 @@ box-shadow:0 0 10px rgba(0,0,0,0.1);
 
 h1{
 text-align:center;
-margin-bottom:5px;
-}
-
-.empresa{
-text-align:center;
-font-size:14px;
-margin-bottom:30px;
 }
 
 .grid{
@@ -62,13 +53,11 @@ margin-top:20px;
 display:flex;
 justify-content:space-between;
 margin-bottom:8px;
-font-size:15px;
 }
 
 .total{
 font-weight:bold;
 font-size:17px;
-margin-top:10px;
 }
 
 button{
@@ -80,13 +69,6 @@ color:white;
 border:none;
 font-size:15px;
 cursor:pointer;
-border-radius:4px;
-}
-
-@media print{
-button{display:none;}
-body{background:white;}
-.container{box-shadow:none;}
 }
 
 </style>
@@ -98,12 +80,7 @@ body{background:white;}
 
 <h1>PLANETA DOS RETROVISORES</h1>
 
-<div class="empresa">
-CNPJ: 48.027.075/0001-92<br>
-Av. Treze de Maio, 1310 - Ribeirão Preto/SP
-</div>
-
-<h2>Retirada dos Sócios no mês</h2>
+<h2>Retirada dos Sócios</h2>
 
 <div class="grid">
 
@@ -140,7 +117,7 @@ Av. Treze de Maio, 1310 - Ribeirão Preto/SP
 
 <div>
 <label>Mês</label>
-<input type="text" placeholder="Ex: Março 2026">
+<input type="text">
 </div>
 
 </div>
@@ -160,25 +137,10 @@ Av. Treze de Maio, 1310 - Ribeirão Preto/SP
 
 <h3>Sócio 1 (70%)</h3>
 
-<div class="linha">
-<span>Parte do lucro</span>
-<span id="lucro1">0</span>
-</div>
-
-<div class="linha">
-<span>Despesas fixas</span>
-<span id="desp1">0</span>
-</div>
-
-<div class="linha">
-<span>Dívidas pagas</span>
-<span id="div1">0</span>
-</div>
-
-<div class="linha">
-<span>Retirada</span>
-<span id="ret1">0</span>
-</div>
+<div class="linha"><span>Parte do lucro</span><span id="lucro1">0</span></div>
+<div class="linha"><span>Despesas fixas</span><span id="desp1">0</span></div>
+<div class="linha"><span>Dívidas pagas</span><span id="div1">0</span></div>
+<div class="linha"><span>Retirada</span><span id="ret1">0</span></div>
 
 <div class="linha total">
 <span>Saldo final</span>
@@ -191,25 +153,10 @@ Av. Treze de Maio, 1310 - Ribeirão Preto/SP
 
 <h3>Sócio 2 (30%)</h3>
 
-<div class="linha">
-<span>Parte do lucro</span>
-<span id="lucro2">0</span>
-</div>
-
-<div class="linha">
-<span>Despesas fixas</span>
-<span id="desp2">0</span>
-</div>
-
-<div class="linha">
-<span>Dívidas pagas</span>
-<span id="div2">0</span>
-</div>
-
-<div class="linha">
-<span>Retirada</span>
-<span id="ret2">0</span>
-</div>
+<div class="linha"><span>Parte do lucro</span><span id="lucro2">0</span></div>
+<div class="linha"><span>Despesas fixas</span><span id="desp2">0</span></div>
+<div class="linha"><span>Dívidas pagas</span><span id="div2">0</span></div>
+<div class="linha"><span>Retirada</span><span id="ret2">0</span></div>
 
 <div class="linha total">
 <span>Saldo final</span>
@@ -265,16 +212,18 @@ document.getElementById("div2").innerText = moeda(div2);
 document.getElementById("ret1").innerText = moeda(retirada1);
 document.getElementById("ret2").innerText = moeda(retirada2);
 
-document.getElementById("final1").innerText = moeda(final1);
-document.getElementById("final2").innerText = moeda(final2);
+let saldo1 = document.getElementById("final1");
+let saldo2 = document.getElementById("final2");
+
+saldo1.innerText = moeda(final1);
+saldo2.innerText = moeda(final2);
+
+saldo1.style.color = final1 >= 0 ? "green" : "red";
+saldo2.style.color = final2 >= 0 ? "green" : "red";
 
 }
 
 document.addEventListener("input",calcular);
-
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("service-worker.js");
-}
 
 </script>
 
