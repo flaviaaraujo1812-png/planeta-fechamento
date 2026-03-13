@@ -85,12 +85,12 @@ cursor:pointer;
 <div class="grid">
 
 <div>
-<label>Alexandre retirou</label>
+<label>Sócio 1 retirou</label>
 <input type="number" id="retirada1" value="0">
 </div>
 
 <div>
-<label>Anderson retirou</label>
+<label>Sócio 2 retirou</label>
 <input type="number" id="retirada2" value="0">
 </div>
 
@@ -135,7 +135,7 @@ cursor:pointer;
 
 <div class="resultado">
 
-<h3>Alexandre (70%)</h3>
+<h3>Sócio 1 (70%)</h3>
 
 <div class="linha"><span>Parte do lucro</span><span id="lucro1">0</span></div>
 <div class="linha"><span>Despesas fixas</span><span id="desp1">0</span></div>
@@ -151,7 +151,7 @@ cursor:pointer;
 
 <div class="resultado">
 
-<h3>Anderson (30%)</h3>
+<h3>Sócio 2 (30%)</h3>
 
 <div class="linha"><span>Parte do lucro</span><span id="lucro2">0</span></div>
 <div class="linha"><span>Despesas fixas</span><span id="desp2">0</span></div>
@@ -205,8 +205,28 @@ let lucro2 = lucroLiquido * 0.30;
 document.getElementById("lucro1").innerText = moeda(lucro1);
 document.getElementById("lucro2").innerText = moeda(lucro2);
 
+/* divisão das despesas (50/50) */
+
+let desp1 = despesas / 2;
+let desp2 = despesas / 2;
+
+document.getElementById("desp1").innerText = moeda(desp1);
+document.getElementById("desp2").innerText = moeda(desp2);
+
+/* divisão das dívidas (70/30) */
+
+let div1 = dividas * 0.70;
+let div2 = dividas * 0.30;
+
+document.getElementById("div1").innerText = moeda(div1);
+document.getElementById("div2").innerText = moeda(div2);
+
+/* retiradas */
+
 document.getElementById("ret1").innerText = moeda(retirada1);
 document.getElementById("ret2").innerText = moeda(retirada2);
+
+/* saldo final */
 
 let saldo1 = lucro1 - retirada1;
 let saldo2 = lucro2 - retirada2;
@@ -220,13 +240,13 @@ campo2.innerText = moeda(saldo2);
 campo1.style.color = saldo1 >= 0 ? "green" : "red";
 campo2.style.color = saldo2 >= 0 ? "green" : "red";
 
-/* conferência do caixa */
+/* conferência de caixa */
 
 let totalRetiradas = retirada1 + retirada2;
-let caixaEmpresa = lucroLiquido - totalRetiradas;
+let caixa = lucroLiquido - totalRetiradas;
 
 if(document.getElementById("caixaEmpresa")){
-document.getElementById("caixaEmpresa").innerText = moeda(caixaEmpresa);
+document.getElementById("caixaEmpresa").innerText = moeda(caixa);
 }
 
 }
