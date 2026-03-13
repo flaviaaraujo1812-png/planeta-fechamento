@@ -169,65 +169,65 @@ cursor:pointer;
 
 </div>
 
-  <script>
+<script>
 
-function parseBR(valor){
+function parseValor(valor){
 if(!valor) return 0;
+
 valor = valor.toString()
 .replace(/\./g,"")
-.replace(",",".");
+.replace(",",".")
+.replace(/[^\d.-]/g,"");
+
 return Number(valor);
 }
 
-function moeda(v){
-return v.toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2});
+function moeda(valor){
+return valor.toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
 function calcular(){
 
-let entradas = parseBR(document.getElementById("entradas").value);
-let despesas = parseBR(document.getElementById("despesas").value);
-let dividas = parseBR(document.getElementById("dividas").value);
+let entradas = parseValor(document.getElementById("entradas").value);
+let despesas = parseValor(document.getElementById("despesas").value);
+let dividas = parseValor(document.getElementById("dividas").value);
 
-let retirada1 = parseBR(document.getElementById("retirada1").value);
-let retirada2 = parseBR(document.getElementById("retirada2").value);
+let retirada1 = parseValor(document.getElementById("retirada1").value);
+let retirada2 = parseValor(document.getElementById("retirada2").value);
 
-let lucro = entradas - despesas - dividas;
+let lucroLiquido = entradas - despesas - dividas;
 
-let lucro1 = lucro * 0.7;
-let lucro2 = lucro * 0.3;
+document.getElementById("lucro").innerText = moeda(lucroLiquido);
 
-let desp1 = despesas / 2;
-let desp2 = despesas / 2;
-
-let div1 = dividas * 0.7;
-let div2 = dividas * 0.3;
-
-let final1 = lucro1 - desp1 - div1 - retirada1;
-let final2 = lucro2 - desp2 - div2 - retirada2;
-
-document.getElementById("lucro").innerText = moeda(lucro);
+let lucro1 = lucroLiquido * 0.70;
+let lucro2 = lucroLiquido * 0.30;
 
 document.getElementById("lucro1").innerText = moeda(lucro1);
 document.getElementById("lucro2").innerText = moeda(lucro2);
 
-document.getElementById("desp1").innerText = moeda(desp1);
-document.getElementById("desp2").innerText = moeda(desp2);
-
-document.getElementById("div1").innerText = moeda(div1);
-document.getElementById("div2").innerText = moeda(div2);
-
 document.getElementById("ret1").innerText = moeda(retirada1);
 document.getElementById("ret2").innerText = moeda(retirada2);
 
-let saldo1 = document.getElementById("final1");
-let saldo2 = document.getElementById("final2");
+let saldo1 = lucro1 - retirada1;
+let saldo2 = lucro2 - retirada2;
 
-saldo1.innerText = moeda(final1);
-saldo2.innerText = moeda(final2);
+let campo1 = document.getElementById("final1");
+let campo2 = document.getElementById("final2");
 
-saldo1.style.color = final1 >= 0 ? "green" : "red";
-saldo2.style.color = final2 >= 0 ? "green" : "red";
+campo1.innerText = moeda(saldo1);
+campo2.innerText = moeda(saldo2);
+
+campo1.style.color = saldo1 >= 0 ? "green" : "red";
+campo2.style.color = saldo2 >= 0 ? "green" : "red";
+
+/* conferência do caixa */
+
+let totalRetiradas = retirada1 + retirada2;
+let caixaEmpresa = lucroLiquido - totalRetiradas;
+
+if(document.getElementById("caixaEmpresa")){
+document.getElementById("caixaEmpresa").innerText = moeda(caixaEmpresa);
+}
 
 }
 
