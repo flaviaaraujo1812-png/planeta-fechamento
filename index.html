@@ -1,1 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fechamento de Sócios</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f4f4f4;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+margin-top:40px;
+border-radius:6px;
+box-shadow:0 0 8px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+.empresa{
+text-align:center;
+font-size:14px;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:10px;
+font-size:14px;
+border:1px solid #ccc;
+border-radius:4px;
+}
+
+.resultados{
+margin-top:20px;
+padding:20px;
+background:#f9f9f9;
+border-radius:5px;
+}
+
+.linha{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-size:15px;
+}
+
+.total{
+font-weight:bold;
+font-size:18px;
+margin-top:10px;
+}
+
+.socios{
+margin-top:25px;
+padding:20px;
+background:#eef2ff;
+border-radius:6px;
+}
+
+button{
+margin-top:20px;
+width:100%;
+padding:12px;
+background:black;
+color:white;
+border:none;
+font-size:15px;
+cursor:pointer;
+border-radius:4px;
+}
+
+@media print{
+button{display:none;}
+body{background:white;}
+.container{box-shadow:none;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>PLANETA DOS RETROVISORES</h1>
+
+<div class="empresa">
+CNPJ: 48.027.075/0001-92<br>
+Av Treze de Maio, 1310 - CEP 14090-260<br>
+WhatsApp: (16) 99607-3421
+</div>
+
+<h2>Fechamento de Caixa</h2>
+
+<div class="grid">
+
+<div>
+<label>Total de Entradas</label>
+<input type="number" id="entradas" value="0">
+</div>
+
+<div>
+<label>Despesas Fixas</label>
+<input type="number" id="despesas" value="0">
+</div>
+
+<div>
+<label>Dívidas Pagas</label>
+<input type="number" id="dividas" value="0">
+</div>
+
+<div>
+<label>Mês</label>
+<input type="text" placeholder="Ex: Janeiro 2026">
+</div>
+
+</div>
+
+<div class="resultados">
+
+<div class="linha">
+<span>Total Despesas</span>
+<span id="totalDespesas">0</span>
+</div>
+
+<div class="linha">
+<span>Lucro Líquido</span>
+<span id="lucro">0</span>
+</div>
+
+</div>
+
+<div class="socios">
+
+<h3>Divisão dos Sócios</h3>
+
+<div class="linha">
+<span>Sócio 1 (70%)</span>
+<span id="socio1">0</span>
+</div>
+
+<div class="linha">
+<span>Sócio 2 (30%)</span>
+<span id="socio2">0</span>
+</div>
+
+<h3>Divisão das Dívidas</h3>
+
+<div class="linha">
+<span>Sócio 1 paga</span>
+<span id="divida1">0</span>
+</div>
+
+<div class="linha">
+<span>Sócio 2 paga</span>
+<span id="divida2">0</span>
+</div>
+
+<div class="linha total">
+<span>Saldo Final Sócio 1</span>
+<span id="final1">0</span>
+</div>
+
+<div class="linha total">
+<span>Saldo Final Sócio 2</span>
+<span id="final2">0</span>
+</div>
+
+</div>
+
+<button onclick="window.print()">GERAR RELATÓRIO PDF</button>
+
+</div>
+
+<script>
+
+function calcular(){
+
+let entradas = Number(document.getElementById("entradas").value);
+let despesas = Number(document.getElementById("despesas").value);
+let dividas = Number(document.getElementById("dividas").value);
+
+let totalDespesas = despesas + dividas;
+let lucro = entradas - totalDespesas;
+
+let socio1 = lucro * 0.7;
+let socio2 = lucro * 0.3;
+
+let divida1 = dividas * 0.7;
+let divida2 = dividas * 0.3;
+
+let final1 = socio1 - divida1;
+let final2 = socio2 - divida2;
+
+document.getElementById("totalDespesas").innerText = totalDespesas.toFixed(2);
+document.getElementById("lucro").innerText = lucro.toFixed(2);
+
+document.getElementById("socio1").innerText = socio1.toFixed(2);
+document.getElementById("socio2").innerText = socio2.toFixed(2);
+
+document.getElementById("divida1").innerText = divida1.toFixed(2);
+document.getElementById("divida2").innerText = divida2.toFixed(2);
+
+document.getElementById("final1").innerText = final1.toFixed(2);
+document.getElementById("final2").innerText = final2.toFixed(2);
+
+}
+
+document.addEventListener("input", calcular);
+
+if ("serviceWorker" in navigator) {
+navigator.serviceWorker.register("service-worker.js");
+}
+
+</script>
+
+</body>
+</html>
